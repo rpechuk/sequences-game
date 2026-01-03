@@ -106,10 +106,63 @@ function App() {
   }, [inputValue, submitGuess, isProcessing]);
 
   useEffect(() => {
-    const now = new Date();
-    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-    initGame(today);
+    // Check URL for date param
+    const params = new URLSearchParams(window.location.search);
+    const dateParam = params.get('date');
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    
+    let targetDate = '';
+
+    const isValidDate = (d: string) => {
+        if (!dateRegex.test(d)) return false;
+        const date = new Date(d + 'T00:00:00');
+        return !isNaN(date.getTime());
+    };
+
+    if (dateParam && isValidDate(dateParam)) {
+        targetDate = dateParam;
+    } else {
+        const now = new Date();
+        targetDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    }
+
+    initGame(targetDate);
+
+    // Set initial URL if needed
+    const newUrl = new URL(window.location.href);
+    if (newUrl.searchParams.get('date') !== targetDate) {
+        newUrl.searchParams.set('date', targetDate);
+        window.history.replaceState({}, '', newUrl);
+    }
   }, [initGame]);
+
+  // Sync URL with currentPlayingDate
+  useEffect(() => {
+    if (!currentPlayingDate) return;
+
+    const url = new URL(window.location.href);
+    if (url.searchParams.get('date') !== currentPlayingDate) {
+        url.searchParams.set('date', currentPlayingDate);
+        window.history.pushState({}, '', url);
+    }
+  }, [currentPlayingDate]);
+
+  // Handle browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+        const params = new URLSearchParams(window.location.search);
+        const date = params.get('date');
+        if (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+            // We use loadPuzzleByDate here to switch without full re-init overhead if possible,
+            // though initGame might be safer if we want to be sure. 
+            // loadPuzzleByDate seems appropriate for switching dates.
+            loadPuzzleByDate(date);
+        }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [loadPuzzleByDate]);
 
   const handleArchiveDateSelect = useCallback((date: string) => {
     setIsArchiveLoad(true);

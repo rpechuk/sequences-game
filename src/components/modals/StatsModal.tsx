@@ -18,11 +18,14 @@ const StatItem = ({ label, value }: { label: string, value: string | number }) =
 );
 
 export function StatsModal({ isOpen, onClose, onArchiveClick }: StatsModalProps) {
-  const { stats, gameStatus, hintsLevel, dailySequence, guesses } = useGameStore();
+  const { stats, gameStatus, hintsLevel, dailySequence, guesses, currentPlayingDate } = useGameStore();
 
   const handleShare = async () => {
     // Generate share text
-    const date = new Date().toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' });
+    // Use puzzle date if available, otherwise fallback to today
+    const dateObj = currentPlayingDate ? new Date(currentPlayingDate + 'T12:00:00') : new Date();
+    const dateStr = dateObj.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' });
+    
     const isWon = gameStatus === 'won';
     const result = isWon ? 'Solved' : 'Failed';
     const attempts = guesses.length;
@@ -61,8 +64,13 @@ export function StatsModal({ isOpen, onClose, onArchiveClick }: StatsModalProps)
     }
 
     const grid = `${row1}\n${row2}\n${row3}`;
+    
+    const url = new URL(window.location.origin + window.location.pathname);
+    if (currentPlayingDate) {
+        url.searchParams.set('date', currentPlayingDate);
+    }
 
-    const text = `Sequences ${date}\n${result} in ${attempts}\n\n${grid}\nhttps://sequences-game.com`;
+    const text = `Sequences ${dateStr}\n${result} in ${attempts}\n\n${grid}\n${url.toString()}`;
     
     if (navigator.share) {
       try {
