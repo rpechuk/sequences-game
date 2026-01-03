@@ -15,6 +15,7 @@
   </p>
 
   <div>
+    <img src="https://img.shields.io/badge/vibecoded-⚡-ff00ff?style=flat-square" alt="Vibecoded" />
     <img src="https://img.shields.io/github/package-json/v/rpechuk/sequences-game?style=flat-square&color=blue" alt="Version" />
     <img src="https://img.shields.io/github/actions/workflow/status/rpechuk/sequences-game/deploy.yml?style=flat-square" alt="Build Status" />
     <img src="https://img.shields.io/github/last-commit/rpechuk/sequences-game?style=flat-square&color=orange" alt="Last Commit" />
