@@ -1,5 +1,6 @@
 import React from 'react';
 import { Header } from './Header';
+import { Footer } from './Footer';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -23,6 +24,7 @@ export function Layout({ children, onStatsClick, onMenuClick, onSettingsClick, o
       <main className="flex-1 w-full max-w-2xl mx-auto px-4 py-4 flex flex-col items-center justify-between overflow-hidden">
         {children}
       </main>
+      <Footer />
     </div>
   );
 }
