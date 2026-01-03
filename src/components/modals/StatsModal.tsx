@@ -10,6 +10,13 @@ interface StatsModalProps {
   onArchiveClick?: () => void;
 }
 
+const StatItem = ({ label, value }: { label: string, value: string | number }) => (
+  <div className="flex flex-col items-center">
+    <div className="text-2xl sm:text-3xl font-bold font-mono">{value}</div>
+    <div className="text-xs uppercase tracking-wider text-center text-primary/60">{label}</div>
+  </div>
+);
+
 export function StatsModal({ isOpen, onClose, onArchiveClick }: StatsModalProps) {
   const { stats, gameStatus, hintsLevel, dailySequence, guesses } = useGameStore();
 
@@ -60,7 +67,7 @@ export function StatsModal({ isOpen, onClose, onArchiveClick }: StatsModalProps)
     if (navigator.share) {
       try {
         await navigator.share({ text });
-      } catch (e) {
+      } catch {
         console.log('Share canceled');
       }
     } else {
@@ -69,12 +76,7 @@ export function StatsModal({ isOpen, onClose, onArchiveClick }: StatsModalProps)
     }
   };
 
-  const StatItem = ({ label, value }: { label: string, value: string | number }) => (
-    <div className="flex flex-col items-center">
-      <div className="text-2xl sm:text-3xl font-bold font-mono">{value}</div>
-      <div className="text-xs uppercase tracking-wider text-center text-primary/60">{label}</div>
-    </div>
-  );
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Statistics">

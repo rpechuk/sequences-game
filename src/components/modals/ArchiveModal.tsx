@@ -3,6 +3,9 @@ import { Check, Lock, ChevronLeft, ChevronRight } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useState, useMemo } from 'react';
 
+// Generate all dates from Dec 1, 2025 to today
+const startDate = new Date(2025, 11, 1); // Dec 1, 2025
+
 interface ArchiveModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -12,12 +15,11 @@ interface ArchiveModalProps {
 }
 
 export function ArchiveModal({ isOpen, onClose, onSelectDate, currentDate, completedDates }: ArchiveModalProps) {
-  const today = new Date();
-  const [selectedMonth, setSelectedMonth] = useState(today.getMonth());
-  const [selectedYear, setSelectedYear] = useState(today.getFullYear());
+  const today = useMemo(() => new Date(), []);
+  const [selectedMonth, setSelectedMonth] = useState(() => today.getMonth());
+  const [selectedYear, setSelectedYear] = useState(() => today.getFullYear());
 
-  // Generate all dates from Dec 1, 2025 to today
-  const startDate = new Date(2025, 11, 1); // Dec 1, 2025
+  // startDate is now defined outside and is stable
   
   // Get dates for the selected month/year
   const datesForMonth = useMemo(() => {
@@ -34,7 +36,7 @@ export function ArchiveModal({ isOpen, onClose, onSelectDate, currentDate, compl
     }
     
     return dates;
-  }, [selectedMonth, selectedYear]);
+  }, [selectedMonth, selectedYear, today]);
 
   const formatDate = (date: Date): string => {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;

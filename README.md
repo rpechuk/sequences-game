@@ -2,7 +2,7 @@
 
 A daily number sequence puzzle game where players discover patterns and complete sequences. Built with React, TypeScript, and Vite.
 
-🎮 **[Play Live](https://ron.github.io/sequences/)** *(Update with your GitHub username)*
+🎮 **[Play Live](https://rpechuk.github.io/sequences-game/)**
 
 ## Features
 
@@ -81,42 +81,7 @@ The CI/CD pipeline automatically:
 - **Injects commit hash** into the build for tracking
 - **Updates version files** and commits them back to the repository
 
-## Deployment
 
-### GitHub Pages Setup
-
-1. **Enable GitHub Pages** in your repository:
-   - Go to **Settings** → **Pages**
-   - Under **Source**, select **GitHub Actions**
-
-2. **Push to main branch**:
-   ```bash
-   git add .
-   git commit -m "Your commit message"
-   git push origin main
-   ```
-
-3. **Monitor deployment**:
-   - Go to the **Actions** tab in your repository
-   - Watch the "Deploy to GitHub Pages" workflow
-   - Once complete, site will be live at: `https://[username].github.io/sequences/`
-
-### Deployment Workflow
-
-Every push to the `main` branch automatically:
-1. ✅ Bumps the patch version
-2. ✅ Injects the current commit hash
-3. ✅ Runs the linter
-4. ✅ Builds the production bundle
-5. ✅ Deploys to GitHub Pages
-6. ✅ Commits version changes back to the repository
-
-### Manual Deployment
-
-You can also trigger a deployment manually:
-1. Go to **Actions** tab in GitHub
-2. Select **Deploy to GitHub Pages** workflow
-3. Click **Run workflow** → **Run workflow**
 
 ## Release Process
 
@@ -186,9 +151,7 @@ sequences/
 - **GitHub Actions** - CI/CD
 - **GitHub Pages** - Hosting
 
-## License
 
-This project is private and not licensed for public use.
 
 ---
 

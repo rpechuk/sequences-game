@@ -1,4 +1,5 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { usePrevious } from './hooks/usePrevious';
 import { Layout } from './components/layout/Layout';
 import { SequenceRow } from './components/game/SequenceRow';
 import { VirtualKeypad } from './components/game/VirtualKeypad';
@@ -35,11 +36,13 @@ function App() {
   const [isArchiveLoad, setIsArchiveLoad] = useState(false);
 
   // Track previous date to detect switching
-  const prevPlayingDate = useRef(currentPlayingDate);
+  // Track previous date to detect switching
+  const prevPlayingDate = usePrevious(currentPlayingDate);
+  // Track previous game status to detect completion transitions
+  const prevGameStatus = usePrevious(gameStatus);
 
   // Determine if we just switched dates
-  // We check this synchronously during render to affect the initial render of the new date's components
-  const isDateSwitch = prevPlayingDate.current !== currentPlayingDate;
+  const isDateSwitch = prevPlayingDate !== undefined && prevPlayingDate !== currentPlayingDate;
 
   // Disable animations if:
   // 1. Initial load and game is already over
@@ -119,8 +122,8 @@ function App() {
     // 1. It's a normal daily game (not archive load)
     // 2. OR it's an archive game that we JUST completed (transitioned from playing)
     // AND: We are not just loading a different date that happens to be complete
-    const justCompleted = prevGameStatus.current === 'playing' && isGameOver;
-    const dateChanged = prevPlayingDate.current !== currentPlayingDate;
+    const justCompleted = prevGameStatus === 'playing' && isGameOver;
+    const dateChanged = prevPlayingDate !== undefined && prevPlayingDate !== currentPlayingDate;
     
     // If the date changed, we usually don't want to show the sequence (it's just loading a completed puzzle)
     // Unless we want to support some edge case, but generally loading a completed puzzle shouldn't trigger celebration
@@ -128,7 +131,7 @@ function App() {
 
     if (shouldShowSequence) {
       if (disableAnimations) {
-        setShowStats(true);
+        setTimeout(() => setShowStats(true), 0);
       } else {
         const snackbarDelay = setTimeout(() => {
             const messages = gameStatus === 'won' ? WIN_MESSAGES : LOSS_MESSAGES;
@@ -143,18 +146,9 @@ function App() {
         return () => clearTimeout(snackbarDelay);
       }
     }
-  }, [isGameOver, disableAnimations, gameStatus, isArchiveLoad, currentPlayingDate]);
+  }, [isGameOver, disableAnimations, gameStatus, isArchiveLoad, currentPlayingDate, prevGameStatus, prevPlayingDate]);
 
-  // Track previous game status to detect completion transitions
-  const prevGameStatus = useRef(gameStatus);
-  useEffect(() => {
-    prevGameStatus.current = gameStatus;
-  }, [gameStatus]);
 
-  // Track previous date
-  useEffect(() => {
-    prevPlayingDate.current = currentPlayingDate;
-  }, [currentPlayingDate]);
 
 
   // Theme Effects

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { clsx } from 'clsx'; // Using clsx for conditional classes
 
@@ -50,11 +50,11 @@ export function NumberTile({ value, status = 'default', label, delay = 0, isInpu
   // Snapshot input for smooth transitions
   const [frozenInput, setFrozenInput] = useState('');
   
-  useEffect(() => {
-    if (isInputTarget && inputValue) {
-      setFrozenInput(inputValue);
-    }
-  }, [isInputTarget, inputValue]);
+  // Mirror props to state during render (safe if conditional)
+  // This updates frozenInput whenever the user types, so it's ready when they submit
+  if (isInputTarget && inputValue && inputValue !== frozenInput) {
+    setFrozenInput(inputValue);
+  }
 
   // Display content logic:
   // 1. If actively typing (isInputTarget), show current inputValue.
