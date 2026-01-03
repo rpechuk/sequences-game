@@ -119,20 +119,31 @@ function App() {
         return !isNaN(date.getTime());
     };
 
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
     if (dateParam && isValidDate(dateParam)) {
         targetDate = dateParam;
     } else {
-        const now = new Date();
-        targetDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+        targetDate = today;
     }
 
     initGame(targetDate);
 
     // Set initial URL if needed
     const newUrl = new URL(window.location.href);
-    if (newUrl.searchParams.get('date') !== targetDate) {
-        newUrl.searchParams.set('date', targetDate);
-        window.history.replaceState({}, '', newUrl);
+    // If target is today, we want clean URL (no param)
+    if (targetDate === today) {
+        if (newUrl.searchParams.has('date')) {
+             newUrl.searchParams.delete('date');
+             window.history.replaceState({}, '', newUrl);
+        }
+    } else {
+        // If target is not today, ensure param exists
+        if (newUrl.searchParams.get('date') !== targetDate) {
+            newUrl.searchParams.set('date', targetDate);
+            window.history.replaceState({}, '', newUrl);
+        }
     }
   }, [initGame]);
 
@@ -140,10 +151,20 @@ function App() {
   useEffect(() => {
     if (!currentPlayingDate) return;
 
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     const url = new URL(window.location.href);
-    if (url.searchParams.get('date') !== currentPlayingDate) {
-        url.searchParams.set('date', currentPlayingDate);
-        window.history.pushState({}, '', url);
+
+    if (currentPlayingDate === today) {
+        if (url.searchParams.has('date')) {
+            url.searchParams.delete('date');
+            window.history.pushState({}, '', url);
+        }
+    } else {
+        if (url.searchParams.get('date') !== currentPlayingDate) {
+            url.searchParams.set('date', currentPlayingDate);
+            window.history.pushState({}, '', url);
+        }
     }
   }, [currentPlayingDate]);
 
