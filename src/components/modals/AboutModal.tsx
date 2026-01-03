@@ -1,4 +1,5 @@
 import { Modal } from '../ui/Modal';
+import { getFullVersion } from '../../utils/version';
 
 interface AboutModalProps {
   isOpen: boolean;
@@ -36,7 +37,7 @@ export function AboutModal({ isOpen, onClose }: AboutModalProps) {
 
         <div className="pt-4 border-t border-border">
           <p className="text-xs text-primary/50 text-center">
-            Made with ❤️ for puzzle enthusiasts • v1.0.0
+            Made with ❤️ for puzzle enthusiasts • {getFullVersion()}
           </p>
         </div>
       </div>

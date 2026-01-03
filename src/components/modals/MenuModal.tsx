@@ -10,7 +10,7 @@ interface MenuModalProps {
 
 export function MenuModal({ isOpen, onClose, onArchiveClick, onAboutClick }: MenuModalProps) {
   const handleReportBug = () => {
-    window.open('https://github.com/yourusername/sequences/issues/new', '_blank');
+    window.open('https://github.com/rpechuk/sequences-game/issues/new?template=bug_report.md', '_blank');
   };
 
   return (
