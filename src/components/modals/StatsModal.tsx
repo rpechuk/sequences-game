@@ -136,17 +136,17 @@ export function StatsModal({ isOpen, onClose, onArchiveClick }: StatsModalProps)
             <div className="flex justify-center gap-3">
               <button 
                 onClick={handleShare}
-                className="flex items-center gap-2 bg-correct text-correct-content border-2 border-correct px-8 py-3 rounded-full font-bold uppercase tracking-widest hover:opacity-90 transition-opacity"
+                className="flex items-center gap-2 bg-correct text-correct-content border-2 border-correct px-6 py-2 text-sm rounded-full font-bold uppercase tracking-widest hover:opacity-90 transition-opacity"
               >
-                Share <Share2 className="w-5 h-5" />
+                Share <Share2 className="w-4 h-4" />
               </button>
               
               {onArchiveClick && (
                 <button 
                   onClick={onArchiveClick}
-                  className="flex items-center gap-2 bg-surface text-primary border-2 border-border px-8 py-3 rounded-full font-bold uppercase tracking-widest hover:bg-border/50 transition-all"
+                  className="flex items-center gap-2 bg-surface text-primary border-2 border-border px-6 py-2 text-sm rounded-full font-bold uppercase tracking-widest hover:bg-border/50 transition-all"
                 >
-                  Archive <Archive className="w-5 h-5" />
+                  Archive <Archive className="w-4 h-4" />
                 </button>
               )}
             </div>

@@ -123,7 +123,7 @@ export function ArchiveModal({ isOpen, onClose, onSelectDate, currentDate, compl
         </button>
       </div>
       
-      <div className="max-h-[50vh] overflow-visible pr-2 -mr-2">
+      <div className="max-h-[50vh] overflow-y-auto p-2">
         <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2">
           {datesForMonth.map((date) => {
             const dateStr = formatDate(date);
