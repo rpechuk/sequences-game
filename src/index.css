@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Libre+Franklin:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .rotate-x-180 {
+    transform: rotateX(180deg);
+  }
+}
+
+@layer base {
+  :root {
+    /* Light Theme (Default) */
+    --color-background: #ffffff;
+    --color-surface: #f7f7f7;
+    --color-primary: #121213;
+    --color-border: #d3d6da;
+    
+    /* Col 1: Standard Light */
+    --color-correct: rgb(52, 199, 89);
+    --color-correct-content: #ffffff; 
+    --color-hint: rgb(255, 56, 60);
+    --color-hint-content: #ffffff;
+    --color-absent: #787c7e;
+  }
+
+  :root.dark {
+    --color-background: #121213;
+    --color-surface: #1e1e1f;
+    --color-primary: #ffffff;
+    --color-border: #3a3a3c;
+    --color-absent: #3a3a3c;
+    
+    /* Col 2: Standard Dark */
+    --color-correct: rgb(48, 209, 88); 
+    --color-correct-content: #121213; /* Keep dark text for this lighter green? Or check contrast. */
+    --color-hint: rgb(255, 66, 69);
+    --color-hint-content: #121213; /* Check contrast */
+  }
+  
+  /* Standard Dark overrides for content if needed. 
+     The rgb(48, 209, 88) is ~60% luminance, black text is likely better.
+     rgb(255, 66, 69) is ~55% luminance, black text might be better? 
+     Let's stick to standard practice or previous values if unsure. 
+     Previous dark mode had dark text for pastel correct. 
+     These new colors are quite bright. I will use dark text for Dark Mode standard colors as per typical "dark mode" design often keeping content dark on bright tiles 
+     OR match the "content" logic. 
+     Wait, the plan says for High Contrast Dark (Col 4) use Black text.
+     Col 2 is Standard Dark. It is similar to Col 4 but slightly different values.
+     I'll use Black text for Standard Dark too to be safe/consistent with high brightness.
+  */
+  
+  :root.dark {
+    --color-background: #121213;
+    --color-surface: #1e1e1f;
+    --color-primary: #ffffff;
+    --color-border: #3a3a3c;
+    --color-absent: #3a3a3c;
+
+    /* Col 2: Standard Dark */
+    --color-correct: rgb(48, 209, 88);
+    --color-correct-content: #000000;
+    --color-hint: rgb(255, 66, 69);
+    --color-hint-content: #000000;
+  }
+
+  /* 
+   * HIGH CONTRAST THEME OVERRIDES
+   */
+  :root.high-contrast {
+    /* Col 3: High Contrast Light */
+    --color-correct: rgb(0, 137, 50);
+    --color-correct-content: #ffffff;
+    --color-hint: rgb(233, 21, 45);
+    --color-hint-content: #ffffff;
+  }
+
+  :root.high-contrast.dark {
+    /* Col 4: High Contrast Dark */
+    --color-correct: rgb(74, 217, 104);
+    --color-correct-content: #000000;
+    --color-hint: rgb(255, 97, 101);
+    --color-hint-content: #000000;
+  }
+
+  body {
+    @apply bg-background text-primary font-sans;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-bold;
+  }
+}
+
+@theme {
+  --animate-shake: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+  
+  @keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+  }
+
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-primary: var(--color-primary);
+  --color-border: var(--color-border);
+  --color-correct: var(--color-correct);
+  --color-correct-content: var(--color-correct-content);
+  --color-absent: var(--color-absent);
+  --color-hint: var(--color-hint);
+  --color-hint-content: var(--color-hint-content);
+
+  --font-serif: "Libre Baskerville", serif;
+  --font-sans: "Libre Franklin", sans-serif;
+}
